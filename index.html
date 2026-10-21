@@ -64,6 +64,7 @@
   --cendre-30: color-mix(in srgb, var(--cendre) 30%, transparent);
   --nuit-97: color-mix(in srgb, var(--nuit) 97%, transparent);
   --nuit-40: color-mix(in srgb, var(--nuit) 40%, transparent);
+  --nuit-85: color-mix(in srgb, var(--nuit) 85%, transparent);
   --nuit-shadow: color-mix(in srgb, var(--nuit) 10%, transparent);
 }
 
@@ -153,6 +154,32 @@ ul { list-style: none; }
 }
 .skip-link:focus { top: 8px; }
 
+/* ============ ICÔNES ============ */
+.ico {
+  display: inline-block;
+  width: 1.15em; height: 1.15em;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: -0.2em;
+}
+.bandeau .ico { width: 14px; height: 14px; margin-right: 4px; vertical-align: -2px; }
+.badge .ico, .contact-card__badge .ico { color: var(--acier); }
+.card__icon .ico { width: 26px; height: 26px; color: var(--acier); stroke-width: 1.5; }
+.why-card__icon .ico { width: 28px; height: 28px; color: var(--acier); stroke-width: 1.5; }
+.card__link .ico { margin-left: 6px; transition: transform .25s ease; }
+.card__link:hover .ico { transform: translateX(3px); }
+.contact-card__tel, .contact-card__mail, .contact-card__addr, .contact-card__hours, .contact-card__urgent {
+  display: inline-flex; align-items: flex-start; gap: 10px;
+}
+.contact-card__tel .ico { margin-top: 0.12em; }
+.contact-card__mail .ico, .contact-card__addr .ico, .contact-card__hours .ico, .contact-card__urgent .ico { margin-top: 0.22em; color: var(--acier); }
+.footer__info .ico { color: var(--acier); margin-right: 4px; }
+.footer__info .sep { margin: 0 6px; }
+
 /* ============ BOUTONS ============ */
 .btn {
   display: inline-flex;
@@ -214,6 +241,7 @@ ul { list-style: none; }
   backdrop-filter: blur(12px);
   box-shadow: 0 1px 0 var(--glace-08);
 }
+.gallery__label { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); background: var(--nuit-40); }
 .header__inner {
   height: 100%;
   display: flex;
@@ -308,6 +336,30 @@ ul { list-style: none; }
     linear-gradient(115deg, transparent 52%, var(--glace-08) 52.2%, transparent 60%);
   pointer-events: none;
 }
+.hero__photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero__photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 70% 40%;
+  opacity: 0.55;
+}
+/* Fondu vers le nuit à gauche pour la lisibilité du texte */
+.hero__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, var(--nuit) 0%, var(--nuit-85) 38%, var(--nuit-40) 100%),
+    var(--motif-losanges);
+  background-size: auto, 40px 40px;
+}
+.hero::before { z-index: 1; }
+.hero__glass, .hero__scroll { z-index: 1; }
 .hero__glass {
   position: absolute;
   right: -6vw;
@@ -327,7 +379,7 @@ ul { list-style: none; }
   border: 1px solid var(--glace-08);
   border-radius: var(--radius-sm);
 }
-.hero__inner { position: relative; z-index: 1; }
+.hero__inner { position: relative; z-index: 2; }
 
 .hero__title {
   font-family: var(--font-display);
@@ -413,7 +465,6 @@ ul { list-style: none; }
 .card__icon {
   width: 52px; height: 52px;
   display: grid; place-items: center;
-  font-size: 24px;
   background: var(--glace);
   border: 1px solid var(--argent);
   border-radius: var(--radius-sm);
@@ -498,7 +549,13 @@ ul { list-style: none; }
   transition: border-color .3s ease, transform .3s ease;
 }
 .why-card:hover { border-color: var(--acier); transform: translateY(-3px); }
-.why-card__icon { font-size: 26px; margin-bottom: 16px; }
+.why-card__icon {
+  width: 52px; height: 52px;
+  display: grid; place-items: center;
+  border: 1px solid var(--acier-30);
+  border-radius: var(--radius-sm);
+  margin-bottom: 18px;
+}
 .why-card__title {
   font-family: var(--font-display);
   font-weight: 700;
@@ -555,9 +612,11 @@ ul { list-style: none; }
 }
 .gallery__overlay {
   position: absolute; inset: 0;
-  background: var(--nuit-40);
+  background: linear-gradient(180deg, transparent 35%, var(--nuit-85)), var(--nuit-40);
   z-index: -1;
+  transition: opacity .4s ease;
 }
+.gallery__item:hover .gallery__overlay { opacity: 0.75; }
 .gallery__label {
   font-weight: 700;
   font-size: 13px;
@@ -856,12 +915,30 @@ ul { list-style: none; }
 </head>
 <body class="no-js">
 
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.48 12.89 17 22l-5-3-5 3 1.52-9.11"/></symbol>
+  <symbol id="i-tools" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-handshake" viewBox="0 0 24 24"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></symbol>
+  <symbol id="i-mirror" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="1"/><path d="m8 9 4-4M8 14l7-7"/></symbol>
+  <symbol id="i-window" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></symbol>
+  <symbol id="i-thermo" viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><rect x="8" y="12" width="8" height="9"/><path d="M12 12v9"/></symbol>
+  <symbol id="i-door" viewBox="0 0 24 24"><path d="M5 22V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v19"/><path d="M3 22h18"/><rect x="8" y="5" width="8" height="8"/><path d="M15 16v1"/></symbol>
+  <symbol id="i-store" viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+</svg>
+
 <a class="skip-link" href="#main">Aller au contenu</a>
 
 <!-- 0. BANDEAU -->
 <div class="bandeau" role="note">
-  <span class="bandeau__long">🪟 Dépannage urgent dans la journée · BMV Miroiterie Bitton · Bobigny (93) · <a href="tel:0146724512">01 46 72 45 12</a></span>
-  <span class="bandeau__short">⚡ Dépannage dans la journée · <a href="tel:0146724512">01 46 72 45 12</a></span>
+  <span class="bandeau__long"><svg class="ico" aria-hidden="true"><use href="#i-zap"/></svg> Dépannage urgent dans la journée · BMV Miroiterie Bitton · Bobigny (93) · <a href="tel:0146724512">01 46 72 45 12</a></span>
+  <span class="bandeau__short"><svg class="ico" aria-hidden="true"><use href="#i-zap"/></svg> Dépannage dans la journée · <a href="tel:0146724512">01 46 72 45 12</a></span>
 </div>
 
 <!-- 1. HEADER -->
@@ -879,7 +956,7 @@ ul { list-style: none; }
         <li><a class="nav__link" href="#urgences">Urgences</a></li>
         <li><a class="nav__link" href="#contact">Contact</a></li>
       </ul>
-      <a class="btn btn--acier nav__mobile-cta" href="tel:0146724512">📞 01 46 72 45 12</a>
+      <a class="btn btn--acier nav__mobile-cta" href="tel:0146724512"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg> 01 46 72 45 12</a>
     </nav>
 
     <div class="header__actions">
@@ -896,6 +973,7 @@ ul { list-style: none; }
 
   <!-- 2. HERO -->
   <section class="section section--nuit hero" id="accueil">
+    <div class="hero__photo" aria-hidden="true"><img src="images/hero-facade-verre.jpg" alt="" fetchpriority="high" decoding="async"></div>
     <div class="hero__glass" aria-hidden="true"></div>
     <div class="container hero__inner">
       <p class="eyebrow reveal">Miroiterie · Vitrerie · Aluminium Technal · Bobigny (93)</p>
@@ -907,13 +985,13 @@ ul { list-style: none; }
         Miroiterie, vitrerie, menuiseries aluminium — BMV Miroiterie Bitton intervient chez les particuliers comme chez les professionnels à Bobigny et en Seine-Saint-Denis. Agréé Technal, dépannage urgent dans la journée.
       </p>
       <ul class="badges reveal" style="--i:3" aria-label="Nos garanties">
-        <li class="badge"><span aria-hidden="true">🏆</span> Agréé Technal</li>
-        <li class="badge"><span aria-hidden="true">🛠️</span> Depuis 1979</li>
-        <li class="badge badge--urgent"><span aria-hidden="true">⚡</span> Dépannage urgent J</li>
+        <li class="badge"><svg class="ico" aria-hidden="true"><use href="#i-award"/></svg> Agréé Technal</li>
+        <li class="badge"><svg class="ico" aria-hidden="true"><use href="#i-tools"/></svg> Depuis 1979</li>
+        <li class="badge badge--urgent"><svg class="ico" aria-hidden="true"><use href="#i-zap"/></svg> Dépannage urgent J</li>
       </ul>
       <div class="hero__ctas reveal" style="--i:4">
-        <a class="btn btn--acier" href="tel:0146724512"><span aria-hidden="true">📞</span> 01 46 72 45 12</a>
-        <a class="btn btn--ghost" href="#contact"><span aria-hidden="true">✉️</span> Demander un devis</a>
+        <a class="btn btn--acier" href="tel:0146724512"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg> 01 46 72 45 12</a>
+        <a class="btn btn--ghost" href="#contact"><svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg> Demander un devis</a>
       </div>
     </div>
     <span class="hero__scroll" aria-hidden="true"></span>
@@ -931,40 +1009,40 @@ ul { list-style: none; }
       <div class="services-grid">
         <article class="card reveal" style="--i:0">
           <span class="card__num">01</span>
-          <div class="card__icon" aria-hidden="true">🔲</div>
+          <div class="card__icon"><svg class="ico" aria-hidden="true"><use href="#i-mirror"/></svg></div>
           <h3 class="card__title">Miroiterie</h3>
           <p class="card__text">Miroirs sur mesure, gravure du verre, biseautage, façonnage. Travaux de précision pour particuliers et décorateurs. Découpe aux dimensions exactes, finitions soignées.</p>
         </article>
         <article class="card reveal" style="--i:1">
           <span class="card__num">02</span>
-          <div class="card__icon" aria-hidden="true">🪟</div>
+          <div class="card__icon"><svg class="ico" aria-hidden="true"><use href="#i-window"/></svg></div>
           <h3 class="card__title">Vitrerie</h3>
           <p class="card__text">Pose et remplacement de vitrage : simple, double, feuilleté, trempé, armé, imprimé, anti-reflet, autonettoyant, blindé, retardateur d'effraction, contrôle solaire. Toutes configurations.</p>
         </article>
         <article class="card reveal" style="--i:2">
           <span class="card__num">03</span>
-          <div class="card__icon" aria-hidden="true">🏠</div>
+          <div class="card__icon"><svg class="ico" aria-hidden="true"><use href="#i-thermo"/></svg></div>
           <h3 class="card__title">Vitrage isolant</h3>
           <p class="card__text">Amélioration des performances thermiques, acoustiques et phoniques. Double et triple vitrage pour une meilleure isolation, éligible aux aides à la rénovation énergétique.</p>
         </article>
         <article class="card reveal" style="--i:3">
           <span class="card__num">04</span>
-          <div class="card__icon" aria-hidden="true">🏗️</div>
+          <div class="card__icon"><svg class="ico" aria-hidden="true"><use href="#i-door"/></svg></div>
           <h3 class="card__title">Menuiseries aluminium</h3>
           <p class="card__text">Fenêtres, portes-fenêtres, portes d'entrée en aluminium. Agréé Technal — gamme premium de menuiseries aluminium sur mesure pour particuliers et professionnels.</p>
         </article>
         <article class="card reveal" style="--i:4">
           <span class="card__num">05</span>
-          <div class="card__icon" aria-hidden="true">🏪</div>
+          <div class="card__icon"><svg class="ico" aria-hidden="true"><use href="#i-store"/></svg></div>
           <h3 class="card__title">Aménagement de commerces</h3>
           <p class="card__text">Vitrines sur mesure, cloisons vitrées, aménagement de magasins et espaces professionnels. Mise en valeur des espaces commerciaux avec le verre et l'aluminium.</p>
         </article>
         <article class="card card--urgent reveal" style="--i:5">
           <span class="card__num">06</span>
-          <div class="card__icon" aria-hidden="true">⚡</div>
+          <div class="card__icon"><svg class="ico" aria-hidden="true"><use href="#i-zap"/></svg></div>
           <h3 class="card__title">Dépannage urgent</h3>
           <p class="card__text">Intervention dans la journée en cas de sinistre, bris de glace ou urgence vitrerie. Disponible du lundi au vendredi, déplacement à domicile dans le 93.</p>
-          <a class="card__link" href="tel:0146724512">Appeler le 01 46 72 45 12 →</a>
+          <a class="card__link" href="tel:0146724512">Appeler le 01 46 72 45 12 <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </article>
       </div>
     </div>
@@ -987,22 +1065,22 @@ ul { list-style: none; }
 
       <div class="why-grid">
         <article class="why-card reveal" style="--i:0">
-          <div class="why-card__icon" aria-hidden="true">🏆</div>
+          <div class="why-card__icon"><svg class="ico" aria-hidden="true"><use href="#i-award"/></svg></div>
           <h3 class="why-card__title">Agréé Technal</h3>
           <p class="why-card__text">Certification aluminium reconnue. Menuiseries fabriquées selon les standards Technal.</p>
         </article>
         <article class="why-card reveal" style="--i:1">
-          <div class="why-card__icon" aria-hidden="true">📅</div>
+          <div class="why-card__icon"><svg class="ico" aria-hidden="true"><use href="#i-calendar"/></svg></div>
           <h3 class="why-card__title">Depuis 1979</h3>
           <p class="why-card__text">45 ans d'expérience en miroiterie, vitrerie et aluminium sur mesure.</p>
         </article>
         <article class="why-card reveal" style="--i:2">
-          <div class="why-card__icon" aria-hidden="true">⚡</div>
+          <div class="why-card__icon"><svg class="ico" aria-hidden="true"><use href="#i-zap"/></svg></div>
           <h3 class="why-card__title">Urgences J</h3>
           <p class="why-card__text">Dépannage dans la journée. Bris de glace ou sinistre, intervention rapide en Seine-Saint-Denis.</p>
         </article>
         <article class="why-card reveal" style="--i:3">
-          <div class="why-card__icon" aria-hidden="true">🤝</div>
+          <div class="why-card__icon"><svg class="ico" aria-hidden="true"><use href="#i-handshake"/></svg></div>
           <h3 class="why-card__title">Pro &amp; Particuliers</h3>
           <p class="why-card__text">Commerces, magasins, particuliers : BMV accompagne tous les projets, petits et grands.</p>
         </article>
@@ -1016,25 +1094,28 @@ ul { list-style: none; }
       <div class="section-head">
         <p class="eyebrow reveal">Réalisations</p>
         <h2 class="h2 reveal" style="--i:1">Nos chantiers parlent d'eux-mêmes.</h2>
-        <p class="realisations__note-top reveal" style="--i:2">Photos de réalisations à intégrer — miroirs sur mesure, façades vitrées, aménagements commerciaux, menuiseries aluminium.</p>
+        <p class="realisations__note-top reveal" style="--i:2">Miroirs sur mesure, vitrines commerciales, menuiseries aluminium : un aperçu des savoir-faire que nous mettons en œuvre au quotidien.</p>
       </div>
 
       <!-- Pour intégrer une photo : ajouter <img src="..." alt="..." loading="lazy"> dans chaque .gallery__item -->
       <div class="gallery">
         <figure class="gallery__item gallery__item--1 reveal" style="--i:0">
+          <img src="images/miroir-sur-mesure.jpg" alt="Grand miroir sur mesure posé au-dessus d'une vasque, salle de bains contemporaine" loading="lazy" decoding="async" width="1000" height="1503">
           <span class="gallery__overlay" aria-hidden="true"></span>
           <figcaption class="gallery__label">Miroir · Sur mesure</figcaption>
         </figure>
         <figure class="gallery__item gallery__item--2 reveal" style="--i:1">
+          <img src="images/vitrine-commerce.jpg" alt="Devanture de commerce avec grandes vitrines encadrées" loading="lazy" decoding="async" width="1400" height="933">
           <span class="gallery__overlay" aria-hidden="true"></span>
           <figcaption class="gallery__label">Vitrine · Commerce</figcaption>
         </figure>
         <figure class="gallery__item gallery__item--3 reveal" style="--i:2">
+          <img src="images/menuiserie-aluminium.jpg" alt="Façade en menuiseries aluminium anthracite et vitrages reflétant le ciel" loading="lazy" decoding="async" width="1400" height="900">
           <span class="gallery__overlay" aria-hidden="true"></span>
           <figcaption class="gallery__label">Menuiserie · Technal</figcaption>
         </figure>
       </div>
-      <p class="gallery__note">Galerie à compléter avec photos de chantiers</p>
+      <p class="gallery__note">Photos d'illustration.</p>
     </div>
   </section>
 
@@ -1050,20 +1131,20 @@ ul { list-style: none; }
         <aside class="contact-card reveal" style="--i:0">
           <div>
             <p class="contact-card__label">Téléphone</p>
-            <a class="contact-card__tel" href="tel:0146724512">📞 01 46 72 45 12</a>
+            <a class="contact-card__tel" href="tel:0146724512"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg> 01 46 72 45 12</a>
           </div>
           <div>
             <p class="contact-card__label">Email</p>
-            <a class="contact-card__mail" href="mailto:pcorcos@yahoo.fr">✉️ pcorcos@yahoo.fr</a>
+            <a class="contact-card__mail" href="mailto:pcorcos@yahoo.fr"><svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg> pcorcos@yahoo.fr</a>
           </div>
           <div>
             <p class="contact-card__label">Atelier</p>
-            <p class="contact-card__addr">📍 10 Rue Eugène Hénaff,<br>93000 Bobigny</p>
+            <p class="contact-card__addr"><svg class="ico" aria-hidden="true"><use href="#i-pin"/></svg> <span>10 Rue Eugène Hénaff,<br>93000 Bobigny</span></p>
           </div>
-          <p class="contact-card__hours">🕐 Lun–Ven : 8h00–18h00</p>
+          <p class="contact-card__hours"><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg> Lun–Ven : 8h00–18h00</p>
           <hr>
-          <p class="contact-card__urgent">⚡ Dépannage urgent : intervenons dans la journée.</p>
-          <span class="contact-card__badge"><span aria-hidden="true">🏆</span> Aluminier agréé Technal</span>
+          <p class="contact-card__urgent"><svg class="ico" aria-hidden="true"><use href="#i-zap"/></svg> Dépannage urgent : intervenons dans la journée.</p>
+          <span class="contact-card__badge"><svg class="ico" aria-hidden="true"><use href="#i-award"/></svg> Aluminier agréé Technal</span>
         </aside>
 
         <form class="form reveal" id="devis-form" style="--i:1" novalidate>
@@ -1128,9 +1209,9 @@ ul { list-style: none; }
         <p class="footer__tagline">Bitton · Vitrerie · Aluminium Technal · Bobigny (93)</p>
       </div>
       <div class="footer__info">
-        <p>📞 <a href="tel:0146724512">01 46 72 45 12</a> · ✉️ <a href="mailto:pcorcos@yahoo.fr">pcorcos@yahoo.fr</a></p>
-        <p>📍 10 Rue Eugène Hénaff, 93000 Bobigny · Lun–Ven 8h–18h</p>
-        <p>🏆 Agréé Technal · Depuis 1979 · ⚡ Dépannage urgent</p>
+        <p><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg> <a href="tel:0146724512">01 46 72 45 12</a> <span class="sep">·</span> <svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg> <a href="mailto:pcorcos@yahoo.fr">pcorcos@yahoo.fr</a></p>
+        <p><svg class="ico" aria-hidden="true"><use href="#i-pin"/></svg> 10 Rue Eugène Hénaff, 93000 Bobigny <span class="sep">·</span> Lun–Ven 8h–18h</p>
+        <p><svg class="ico" aria-hidden="true"><use href="#i-award"/></svg> Agréé Technal <span class="sep">·</span> Depuis 1979 <span class="sep">·</span> <svg class="ico" aria-hidden="true"><use href="#i-zap"/></svg> Dépannage urgent</p>
       </div>
     </div>
     <div class="footer__bottom">
@@ -1142,8 +1223,8 @@ ul { list-style: none; }
 
 <!-- Barre d'appel mobile -->
 <div class="callbar" aria-label="Contact rapide">
-  <a class="btn btn--acier" href="tel:0146724512">📞 Appeler</a>
-  <a class="btn btn--ghost" href="#contact">✉️ Devis gratuit</a>
+  <a class="btn btn--acier" href="tel:0146724512"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg> Appeler</a>
+  <a class="btn btn--ghost" href="#contact"><svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg> Devis gratuit</a>
 </div>
 
 <script>
